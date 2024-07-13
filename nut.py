@@ -162,17 +162,16 @@ class NUTClient:
 
         Returns:
         - str: Description of the current status of the UPS device.
-               Returns 'Unknown status' if the status is not recognized or if an error occurs.
-               Possible status descriptions:
-               - 'OL': On Line (UPS is on mains power)
-               - 'OB': On Battery (UPS is on battery power)
-               - 'LB': Low Battery (Battery is low)
-               - 'CHRG': Charging (Battery is charging)
-               - 'DISCHRG': Discharging (Battery is discharging)
-               - 'BYPS': Bypass (UPS is bypassed)
-               - 'OFF': Offline (UPS is off)
-               - 'TRIM': SmartTrim (UPS is trimming the voltage)
-               - 'BOOST': SmartBoost (UPS is boosting the voltage)
+                Possible status descriptions:
+                - 'OL': On Line (UPS is on mains power)
+                - 'OB': On Battery (UPS is on battery power)
+                - 'LB': Low Battery (Battery is low)
+                - 'CHRG': Charging (Battery is charging)
+                - 'DISCHRG': Discharging (Battery is discharging)
+                - 'BYPS': Bypass (UPS is bypassed)
+                - 'OFF': Offline (UPS is off)
+                - 'TRIM': SmartTrim (UPS is trimming the voltage)
+                - 'BOOST': SmartBoost (UPS is boosting the voltage)
         """
         status_map = {
             'OL': 'On Line',
@@ -188,7 +187,14 @@ class NUTClient:
 
         ups_vars = self.get_ups_vars()
         if ups_vars:
-            status_code = ups_vars.get('ups.status', 'UNKNOWN')
-            return status_map.get(status_code, 'Unknown status')
+            status_codes = ups_vars.get('ups.status', '').split()
+            status_descriptions = [status_map.get(code, 'Unknown status') for code in status_codes]
+            
+            # Filter out 'Unknown status' if at least one known status is detected
+            known_statuses = [desc for desc in status_descriptions if desc != 'Unknown status']
+            if known_statuses:
+                return ', '.join(known_statuses)
+            else:
+                return 'Unknown status'
         else:
             return 'Unknown status'
