@@ -41,7 +41,7 @@ class TelegramNotifier:
             msg_title (str): The title of the message.
             msg (str): The body of the message.
         """
-        post_msg = "Your faithful employee,\nUPSTools"
+        post_msg = "Your faithful employee,\nTeleUPS"
         full_msg = f"<b>{msg_title}</b>\n\n{msg}\n\n<b>{post_msg}</b>"
         payload = {
             'chat_id': self.chat_id,
