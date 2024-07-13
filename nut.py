@@ -133,7 +133,7 @@ class NUTClient:
         - bool: True if the UPS is on battery power ('OB' status), False otherwise.
         """
         ups_vars = self.get_ups_vars()
-        return ups_vars.get('ups.status') == 'OB' if ups_vars else False
+        return 'OB' in ups_vars.get('ups.status') if ups_vars else False
 
     def is_ups_battery_low(self) -> bool:
         """
