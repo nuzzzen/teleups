@@ -189,7 +189,7 @@ class NUTClient:
         if ups_vars:
             status_codes = ups_vars.get('ups.status', '').split()
             status_descriptions = [status_map.get(code, 'Unknown status') for code in status_codes]
-            
+
             # Filter out 'Unknown status' if at least one known status is detected
             known_statuses = [desc for desc in status_descriptions if desc != 'Unknown status']
             if known_statuses:
