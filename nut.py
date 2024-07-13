@@ -135,22 +135,26 @@ class NUTClient:
         ups_vars = self.get_ups_vars()
         return 'OB' in ups_vars.get('ups.status') if ups_vars else False
 
-    def is_ups_battery_low(self) -> bool:
+    def is_ups_battery_low(self, ignore_ob: bool = False) -> bool:
         """
-        Checks if the UPS battery charge is below the configured low battery threshold while the UPS is on battery power.
+        Checks if the UPS battery charge is below the configured low battery threshold.
 
-        This function first checks if the UPS is currently running on battery power. If the UPS is not on battery power,
-        the function returns False. If the UPS is on battery power, it compares the current battery charge percentage to
-        the low battery charge percentage threshold. If the current charge is less than the low battery threshold, the 
-        function returns True, indicating that the battery is low. Otherwise, it returns False.
+        This method determines whether the UPS battery charge is considered low by comparing the current
+        battery charge percentage with the low battery threshold. By default, it only checks the battery
+        status if the UPS is currently running on battery power (online battery status 'OB'). This behavior
+        can be overridden with the `ignore_ob` parameter.
+
+        Args:
+            ignore_ob (bool): If True, the method will ignore whether the UPS is on battery power and will
+                            only compare the battery charge percentage with the low battery threshold.
+                            Defaults to False.
 
         Returns:
-            bool: True if the UPS is on battery power and the current battery charge is below the low battery threshold,
-                False otherwise.
+            bool: True if the UPS battery charge is below or equal to the low battery threshold, False otherwise.
         """
-        if not self.is_ups_on_battery():
+        if not self.is_ups_on_battery() and not ignore_ob:
             return False
-        return self.get_battery_charge_percentage() < self.get_battery_charge_low_percentage()
+        return self.get_battery_charge_percentage() <= self.get_battery_charge_low_percentage()
 
     def get_ups_status(self) -> str:
         """

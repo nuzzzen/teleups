@@ -46,7 +46,7 @@ class UPSMonitor:
         title = title + "\n" + "UPS Status Information"
         msg = f"Battery Percentage: <b>{self.nut_client.get_battery_charge_percentage()}%</b>\n"
         msg += f"Status: <b>{self.nut_client.get_ups_status()}</b>\n"
-        msg += f"Low Battery: <b>{'Yes' if self.nut_client.is_ups_battery_low() else 'No'}</b>\n"
+        msg += f"Low Battery: <b>{'Yes' if self.nut_client.is_ups_battery_low(True) else 'No'}</b>\n"
         msg += f"Power: <b>{self.nut_client.get_current_power_draw()} watt</b>"
         self.telegram_notifier.send_notification(title, msg)
         self.handle_logging(logging.INFO, "UPS status notification sent")
