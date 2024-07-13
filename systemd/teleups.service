@@ -1,5 +1,5 @@
 [Unit]
-Description=Network UPS Tools - watch status and send notification
+Description=TeleUPS - watch status of UPS and send telegram notification
 
 [Service]
 Type=simple
